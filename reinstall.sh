@@ -2,8 +2,9 @@
 # shellcheck disable=SC2086
 
 set -eE
-confhome=https://raw.githubusercontent.com/bin456789/reinstall/main
-confhome_cn=https://jihulab.com/bin456789/reinstall/-/raw/main
+# 更换配置文件地址
+confhome=https://raw.githubusercontent.com/SD957/reinstall/main
+confhome_cn=https://jihulab.com/SD957/reinstall/-/raw/main
 # confhome_cn=https://mirror.ghproxy.com/https://raw.githubusercontent.com/bin456789/reinstall/main
 
 # https://www.gnu.org/software/gettext/manual/html_node/The-LANGUAGE-variable.html
