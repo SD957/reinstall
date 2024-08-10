@@ -48,17 +48,17 @@ if parted "/dev/$xda" print | grep '^Partition Table' | grep gpt; then
       volume: partition-os
       type: format
       id: format-os
-    # 设置 LUKS 加密
-    - volume: partition-os
-      type: luks
-      id: luks-os
-      name: luksvolume-os  # 这是 LUKS 设备的映射名
-      key: ''             # 密钥将在安装时由用户输入，除非提供密钥文件路径
-    # 对加密的 LUKS 卷格式化
-    - fstype: ext4
-      volume: luks-os
+    # luks??
+    - id: crypt-root
+      type: dm_crypt
+      volume: partition-os
+      dm_name: crypt-root
+      key: setup  
+    # format
+    - id: format-root
       type: format
-      id: format-luks-os
+      volume: crypt-root
+      fstype: btrfs
     # mount
     - path: /
       device: format-os
@@ -99,6 +99,17 @@ EOF
       volume: partition-os
       type: format
       id: format-os
+    # luks??
+    - id: crypt-root
+      type: dm_crypt
+      volume: partition-os
+      dm_name: crypt-root
+      key: setup  
+    #format
+    - id: format-root
+      type: format
+      volume: crypt-root
+      fstype: btrfs
     # mount
     - path: /
       device: format-os
@@ -128,6 +139,17 @@ else
       volume: partition-os
       type: format
       id: format-os
+    # luks??
+    - id: crypt-root
+      type: dm_crypt
+      volume: partition-os
+      dm_name: crypt-root
+      key: setup  
+    # format
+    - id: format-root
+      type: format
+      volume: crypt-root
+      fstype: btrfs
     # mount
     - path: /
       device: format-os
