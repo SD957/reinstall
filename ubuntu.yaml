@@ -70,7 +70,7 @@ autoinstall:
     disable_root: false
     users:
       - name: root
-        lock_passwd: 123@@@
+        lock_passwd: false
     chpasswd:
       expire: false
       # 20.04 arm 需要
