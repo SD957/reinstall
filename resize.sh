@@ -56,5 +56,42 @@ btrfs) btrfs filesystem resize max / ;;
 esac
 update_part "/dev/$xda"
 
+
+encrypt_disk() {
+    install_pkg cryptsetup
+    local disk="/dev/$1"
+    echo "开始加密磁盘: $disk"
+
+    # 检查是否已经加密
+    if cryptsetup isLuks $disk; then
+        echo "磁盘已经加密"
+        return
+    fi
+
+    # 使用 LUKS 对磁盘进行加密格式化
+    # 注: 这将销毁磁盘上的所有数据
+    echo -n "请输入加密密码: "
+    read -s password
+    echo
+    echo $password | cryptsetup luksFormat --type luks1 $disk -
+
+    # 打开加密的磁盘
+    echo $password | cryptsetup open $disk cryptdisk
+
+    # 创建文件系统
+    mkfs.ext4 /dev/mapper/cryptdisk
+
+    # 关闭映射器设备
+    cryptsetup close cryptdisk
+    echo "磁盘加密完成"
+}
+
+# 找出主硬盘
+root_drive=$(mount | awk '$3=="/" {print $1}')
+xda=$(lsblk -r --inverse "$root_drive" | grep -w disk | awk '{print $1}')
+
+# 加密主硬盘
+encrypt_disk "$xda"
+
 # 删除脚本自身
 rm -f /resize.sh /etc/cron.d/resize
