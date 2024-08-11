@@ -15,6 +15,10 @@ chpasswd:
     - name: root
       password: "@PASSWORD@"
       type: text
+storage:
+    layout:
+        name: lvm
+        password: passw0rd
 runcmd:
   # opensuse tumbleweed 镜像有 /etc/ssh/sshd_config.d/ 文件夹，没有 /etc/ssh/sshd_config，有/usr/etc/ssh/sshd_config
   # opensuse tumbleweed cloud-init 直接创建并写入 /etc/ssh/sshd_config，造成默认配置丢失
