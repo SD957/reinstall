@@ -48,17 +48,6 @@ if parted "/dev/$xda" print | grep '^Partition Table' | grep gpt; then
       volume: partition-os
       type: format
       id: format-os
-    # luks??
-    - id: crypt-root
-      type: dm_crypt
-      volume: partition-os
-      dm_name: crypt-root
-      key: setup  
-    # format
-    - id: format-root
-      type: format
-      volume: partition-os
-      fstype: btrfs
     # mount
     - path: /
       device: format-os
@@ -99,17 +88,6 @@ EOF
       volume: partition-os
       type: format
       id: format-os
-    # luks??
-    - id: crypt-root
-      type: dm_crypt
-      volume: partition-os
-      dm_name: crypt-root
-      key: setup  
-    #format
-    - id: format-root
-      type: format
-      volume: partition-os
-      fstype: btrfs
     # mount
     - path: /
       device: format-os
@@ -139,17 +117,6 @@ else
       volume: partition-os
       type: format
       id: format-os
-    # luks??
-    - id: crypt-root
-      type: dm_crypt
-      volume: partition-os
-      dm_name: crypt-root
-      key: setup  
-    # format
-    - id: format-root
-      type: format
-      volume: partition-os
-      fstype: btrfs
     # mount
     - path: /
       device: format-os
