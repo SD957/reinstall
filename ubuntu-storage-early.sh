@@ -57,7 +57,7 @@ if parted "/dev/$xda" print | grep '^Partition Table' | grep gpt; then
     # format
     - id: format-root
       type: format
-      volume: crypt-root
+      volume: partition-os
       fstype: btrfs
     # mount
     - path: /
@@ -108,7 +108,7 @@ EOF
     #format
     - id: format-root
       type: format
-      volume: crypt-root
+      volume: partition-os
       fstype: btrfs
     # mount
     - path: /
@@ -148,7 +148,7 @@ else
     # format
     - id: format-root
       type: format
-      volume: crypt-root
+      volume: partition-os
       fstype: btrfs
     # mount
     - path: /
