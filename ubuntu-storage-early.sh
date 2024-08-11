@@ -44,10 +44,34 @@ if parted "/dev/$xda" print | grep '^Partition Table' | grep gpt; then
       preserve: true
       type: partition
       id: partition-os
+
+    # lvm & luks
+    - volume: partition-os
+      key: 'safekey'
+      preserve: false
+      type: dm_crypt
+      id: dm_crypt-0
+    - name: ubuntu-vg
+      devices: [dm_crypt-0]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+    - name: ubuntu-lv
+      size: $size_os
+      volgroup: lvm_volgroup-0
+      preserve: false
+      type: lvm_partition
+      id: lvm_partition-0
     - fstype: ext4
-      volume: partition-os
+      volume: lvm_partition-0
+      preserve: false
       type: format
       id: format-os
+
+    # - fstype: ext4
+    #   volume: partition-os
+    #   type: format
+    #   id: format-os
     # mount
     - path: /
       device: format-os
@@ -84,10 +108,35 @@ EOF
       preserve: true
       type: partition
       id: partition-os
+
+    # lvm & luks
+    - volume: partition-os
+      key: 'safekey'
+      preserve: false
+      type: dm_crypt
+      id: dm_crypt-0
+    - name: ubuntu-vg
+      devices: [dm_crypt-0]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+    - name: ubuntu-lv
+      size: $size_os
+      volgroup: lvm_volgroup-0
+      preserve: false
+      type: lvm_partition
+      id: lvm_partition-0
     - fstype: ext4
-      volume: partition-os
+      volume: lvm_partition-0
+      preserve: false
       type: format
       id: format-os
+
+    # - fstype: ext4
+    #   volume: partition-os
+    #   type: format
+    #   id: format-os
+      
     # mount
     - path: /
       device: format-os
@@ -113,10 +162,35 @@ else
       preserve: true
       type: partition
       id: partition-os
+
+    # lvm & luks
+    - volume: partition-os
+      key: 'safekey'
+      preserve: false
+      type: dm_crypt
+      id: dm_crypt-0
+    - name: ubuntu-vg
+      devices: [dm_crypt-0]
+      preserve: false
+      type: lvm_volgroup
+      id: lvm_volgroup-0
+    - name: ubuntu-lv
+      size: $size_os
+      volgroup: lvm_volgroup-0
+      preserve: false
+      type: lvm_partition
+      id: lvm_partition-0
     - fstype: ext4
-      volume: partition-os
+      volume: lvm_partition-0
+      preserve: false
       type: format
       id: format-os
+
+    # - fstype: ext4
+    #   volume: partition-os
+    #   type: format
+    #   id: format-os
+
     # mount
     - path: /
       device: format-os
