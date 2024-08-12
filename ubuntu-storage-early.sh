@@ -18,6 +18,10 @@ if parted "/dev/$xda" print | grep '^Partition Table' | grep gpt; then
     if [ -e /dev/disk/by-label/efi ]; then
         size_efi=$(lsblk -bn -o SIZE /dev/disk/by-label/efi)
         cat <<EOF >>/autoinstall.yaml
+  storage:
+      layout:
+        name: lvm
+        password: 123@@@
   config:
     # disk
     - ptable: gpt
@@ -44,34 +48,10 @@ if parted "/dev/$xda" print | grep '^Partition Table' | grep gpt; then
       preserve: true
       type: partition
       id: partition-os
-
-    # lvm & luks
-    - volume: partition-os
-      key: 'safekey'
-      preserve: false
-      type: dm_crypt
-      id: dm_crypt-0
-    - name: ubuntu-vg
-      devices: [dm_crypt-0]
-      preserve: false
-      type: lvm_volgroup
-      id: lvm_volgroup-0
-    - name: ubuntu-lv
-      size: $size_os
-      volgroup: lvm_volgroup-0
-      preserve: false
-      type: lvm_partition
-      id: lvm_partition-0
     - fstype: ext4
-      volume: lvm_partition-0
-      preserve: false
+      volume: partition-os
       type: format
       id: format-os
-
-    # - fstype: ext4
-    #   volume: partition-os
-    #   type: format
-    #   id: format-os
     # mount
     - path: /
       device: format-os
@@ -86,6 +66,10 @@ EOF
         # bios > 2t
         size_biosboot=$(parted "/dev/$xda" unit b print | grep bios_grub | awk '{print $4}' | sed 's/B$//')
         cat <<EOF >>/autoinstall.yaml
+  storage:
+      layout:
+        name: lvm
+        password: 123@@@
   config:
     # disk
     - ptable: gpt
@@ -108,35 +92,10 @@ EOF
       preserve: true
       type: partition
       id: partition-os
-
-    # lvm & luks
-    - volume: partition-os
-      key: 'safekey'
-      preserve: false
-      type: dm_crypt
-      id: dm_crypt-0
-    - name: ubuntu-vg
-      devices: [dm_crypt-0]
-      preserve: false
-      type: lvm_volgroup
-      id: lvm_volgroup-0
-    - name: ubuntu-lv
-      size: $size_os
-      volgroup: lvm_volgroup-0
-      preserve: false
-      type: lvm_partition
-      id: lvm_partition-0
     - fstype: ext4
-      volume: lvm_partition-0
-      preserve: false
+      volume: partition-os
       type: format
       id: format-os
-
-    # - fstype: ext4
-    #   volume: partition-os
-    #   type: format
-    #   id: format-os
-      
     # mount
     - path: /
       device: format-os
@@ -147,6 +106,10 @@ EOF
 else
     # bios
     cat <<EOF >>/autoinstall.yaml
+  storage:
+      layout:
+        name: lvm
+        password: 123@@@
   config:
     # disk
     - ptable: msdos
@@ -162,35 +125,10 @@ else
       preserve: true
       type: partition
       id: partition-os
-
-    # lvm & luks
-    - volume: partition-os
-      key: 'safekey'
-      preserve: false
-      type: dm_crypt
-      id: dm_crypt-0
-    - name: ubuntu-vg
-      devices: [dm_crypt-0]
-      preserve: false
-      type: lvm_volgroup
-      id: lvm_volgroup-0
-    - name: ubuntu-lv
-      size: $size_os
-      volgroup: lvm_volgroup-0
-      preserve: false
-      type: lvm_partition
-      id: lvm_partition-0
     - fstype: ext4
-      volume: lvm_partition-0
-      preserve: false
+      volume: partition-os
       type: format
       id: format-os
-
-    # - fstype: ext4
-    #   volume: partition-os
-    #   type: format
-    #   id: format-os
-
     # mount
     - path: /
       device: format-os
