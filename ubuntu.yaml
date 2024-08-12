@@ -10,6 +10,10 @@ autoinstall:
   kernel:
     package: linux-generic
   timezone: Asia/Shanghai
+  storage:
+    layout:
+      name: lvm
+      password: 123@@@
   ssh:
     allow-pw: true
     authorized-keys: []
@@ -26,10 +30,10 @@ autoinstall:
           eval "$(echo $var | sed -E "s/${prefix}_([^=]*)=(.*)/\1='\2'/")"
       done
 
-      # 生成分区信息
-      xda=$(curl -L "$confhome/get-xda.sh" | sh -s)
-      export xda
-      curl -L "$confhome/ubuntu-storage-early.sh" | sh -s
+      # # 生成分区信息
+      # xda=$(curl -L "$confhome/get-xda.sh" | sh -s)
+      # export xda
+      # curl -L "$confhome/ubuntu-storage-early.sh" | sh -s
 
       # 内核风味
       # https://bugs.launchpad.net/subiquity/+bug/1989353
