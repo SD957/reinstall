@@ -30,10 +30,6 @@ autoinstall:
       xda=$(curl -L "$confhome/get-xda.sh" | sh -s)
       export xda
       curl -L "$confhome/ubuntu-storage-early.sh" | sh -s
-      
-      d-i partman-auto/method string crypto
-      d-i partman-crypto/passphrase password TEMPORARY
-      d-i partman-crypto/passphrase-again password TEMPORARY
 
       # 内核风味
       # https://bugs.launchpad.net/subiquity/+bug/1989353
@@ -67,10 +63,10 @@ autoinstall:
       # curtin in-target --target=/target -- apt update
       # curtin in-target --target=/target -- apt install --only-upgrade cloud-init
   user-data:
-    runcmd:
-      - |
-        # 合并分区
-        # bash /resize.sh
+    # runcmd:
+    #   - |
+    #     # 合并分区
+    #     # bash /resize.sh
     disable_root: false
     users:
       - name: root
